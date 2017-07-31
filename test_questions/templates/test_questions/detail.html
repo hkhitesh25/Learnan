@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{% if stream %}{{ stream.title }}{% else %}Questions{% endif %}
+{% endblock %}
+{% block content %}
+<div class="question-detail">
+<img src="{% if question.image %}{{ question.image.url }}{% else %}
+{% static "img/no_image.png" %}{% endif %}">
+<h1>{{ question.name }}</h1>
+<h2><a href="{{ question.stream.get_absolute_url }}">{{ question.stream }}</a></h2>
+
+{{ question.description|linebreaks }}
+
+
+<form action="." method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<input type="submit" value="Submit" />
+</form>
+
+
+
+</div>
+{% endblock %}

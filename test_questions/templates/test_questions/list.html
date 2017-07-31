@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{% if stream %}{{ stream.name }}{% else %}Questions{% endif %}
+{% endblock %}
+{% block content %}
+<div id="sidebar">
+<h3>Streams</h3>
+<ul>
+<li {% if not stream %}class="selected"{% endif %}>
+<a href="{% url "test_questions:question_list" %}">All</a>
+</li>
+{% for c in streams %}
+	<li {% if stream.slug == c.slug %}class="selected"{% endif %}>
+	<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+	</li>
+{% endfor %}
+</ul>
+</div>
+<div id="main" class="question-list">
+<h1>{% if stream %}{{ stream.name }}{% else %}questions{% endif %}</h1>
+
+{% for question in questions %}
+<div class="item">
+<a href="{{ question.get_absolute_url }}">
+<img src="{% if question.image %}{{ question.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+</a>
+<a href="{{ question.get_absolute_url }}">{{ question.name }}</a><br>
+
+
+</div>
+{% endfor %}
+</div>
+{% endblock %}
